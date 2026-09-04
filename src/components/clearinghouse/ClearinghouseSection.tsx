@@ -6,8 +6,9 @@ import { ClearinghouseDocument, Vacancy } from '../../types';
 import {
   Search, Download, FileText, Scale, BarChart2,
   Newspaper, Globe, Briefcase, MapPin, Clock, Users,
-  ChevronRight, X, ExternalLink, CheckCircle2, Send
+  ChevronRight, X, ExternalLink, CheckCircle2, Send, Printer
 } from 'lucide-react';
+import SitRepModal from './SitRepModal';
 
 const CATEGORY_LABELS: Record<string, { label: string; icon: React.ElementType; color: string }> = {
   proclamation: { label: 'Proclamation', icon: Scale, color: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30' },
@@ -139,6 +140,8 @@ const ClearinghouseSection: React.FC = () => {
     return matchSearch && matchCat;
   });
 
+  const [showSitRep, setShowSitRep] = useState(false);
+
   return (
     <section className="py-16 px-6 max-w-screen-2xl mx-auto">
       <div className="text-center mb-8">
@@ -150,21 +153,33 @@ const ClearinghouseSection: React.FC = () => {
         </p>
       </div>
 
-      {/* View toggle */}
-      <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 w-fit mx-auto mb-8 gap-1">
+      {/* View toggle & SitRep action */}
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+        <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 gap-1">
+          <button
+            onClick={() => setView('documents')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${view === 'documents' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          >
+            <FileText className="w-4 h-4" /> {language === 'om' ? 'Galmee & Seera' : 'Documents & Law'}
+          </button>
+          <button
+            onClick={() => setView('careers')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${view === 'careers' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          >
+            <Briefcase className="w-4 h-4" /> {language === 'om' ? 'Beeksisa Hojii' : 'Careers & Vacancies'}
+          </button>
+        </div>
+
         <button
-          onClick={() => setView('documents')}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${view === 'documents' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          onClick={() => setShowSitRep(true)}
+          className="flex items-center gap-2 bg-gadaa-gold hover:bg-gadaa-goldDark text-gadaa-black px-4 py-2.5 rounded-xl font-bold text-sm shadow transition-all hover:scale-105 active:scale-95"
         >
-          <FileText className="w-4 h-4" /> {language === 'om' ? 'Galmee & Seera' : 'Documents & Law'}
-        </button>
-        <button
-          onClick={() => setView('careers')}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${view === 'careers' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-        >
-          <Briefcase className="w-4 h-4" /> {language === 'om' ? 'Beeksisa Hojii' : 'Careers & Vacancies'}
+          <Printer className="w-4 h-4" />
+          <span>{language === 'om' ? 'Gabaasa SitRep (Official PDF)' : 'Weekly SitRep Digest (PDF)'}</span>
         </button>
       </div>
+
+      {showSitRep && <SitRepModal onClose={() => setShowSitRep(false)} />}
 
       {view === 'documents' && (
         <>

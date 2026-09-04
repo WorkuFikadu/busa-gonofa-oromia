@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAppState } from '../../context/AppStateContext';
-import { AlertTriangle, ChevronRight, Phone, Menu, X, Globe2, Shield, Sun, Moon, Download, Smartphone, Share2 } from 'lucide-react';
+import { AlertTriangle, ChevronRight, Phone, Menu, X, Globe2, Shield, Sun, Moon, Download, Smartphone, Share2, WifiOff, Radio } from 'lucide-react';
+import { getOfflineIncidents, clearOfflineIncidents } from '../../utils/offlineQueue';
+import AudioAlertPlayer from '../common/AudioAlertPlayer';
 
 interface NavbarProps {
   darkMode: boolean;
@@ -27,13 +29,38 @@ const NAV_ITEMS = [
 
 const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
   const { language, setLanguage, t } = useLanguage();
-  const { activeTab, setActiveTab, tickerActive, currentUser } = useAppState();
+  const { activeTab, setActiveTab, tickerActive, currentUser, addIncident } = useAppState();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showIOSModal, setShowIOSModal] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [syncedCount, setSyncedCount] = useState(0);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      // Auto-sync queued offline incidents
+      const queued = getOfflineIncidents();
+      if (queued.length > 0) {
+        queued.forEach(inc => addIncident(inc));
+        setSyncedCount(queued.length);
+        clearOfflineIncidents();
+        setTimeout(() => setSyncedCount(0), 5000);
+      }
+    };
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [addIncident]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -83,6 +110,35 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
 
   return (
     <>
+      {/* Offline Rural Mode Alert Banner */}
+      {!isOnline && (
+        <div className="bg-amber-600 text-white text-xs font-bold py-2 px-4 flex items-center justify-between shadow-md z-50 sticky top-0">
+          <div className="flex items-center gap-2">
+            <WifiOff className="w-4 h-4 animate-bounce" />
+            <span>
+              {language === 'om'
+                ? "Haala Sarara-Albee (Offline Mode) — Gabaasni fi gumaachi keessan ofumaan kuufamee yeroo intarneetiin deebi'u darba."
+                : language === 'am'
+                ? "ከመስመር ውጭ (Offline Mode) — ሪፖርቶችዎ በስልክዎ ላይ ተቀምጠው ኢንተርኔት ሲመጣ በቀጥታ ይላካሉ።"
+                : "Rural Offline Mode Active — Local caching enabled. Incident reports & manifests are saved locally and auto-synced when online."}
+            </span>
+          </div>
+          <span className="hidden sm:inline bg-black/20 px-2 py-0.5 rounded text-[11px]">8181 Toll-Free Available</span>
+        </div>
+      )}
+
+      {/* Sync Success Alert */}
+      {syncedCount > 0 && (
+        <div className="bg-emerald-600 text-white text-xs font-bold py-1.5 px-4 flex items-center gap-2 shadow-md z-50">
+          <Radio className="w-4 h-4 animate-spin" />
+          <span>
+            {language === 'om'
+              ? `Gabaasni ${syncedCount} sarara-albee kuufamee ture milkiin gara giddugalaatti darbeera!`
+              : `Successfully synchronized ${syncedCount} queued offline reports to the Regional Operations Center!`}
+          </span>
+        </div>
+      )}
+
       {/* Emergency Ticker */}
       {tickerActive && (
         <div className="bg-red-700 text-white py-2 overflow-hidden relative z-50">
@@ -90,6 +146,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
             <span className="flex-shrink-0 flex items-center gap-2 font-bold text-sm">
               <AlertTriangle className="w-4 h-4 animate-pulse" />
               {t.ticker?.defaultText?.split(':')[0]}:
+              <AudioAlertPlayer compact text={t.ticker?.defaultText || ''} lang={language} />
             </span>
             <div className="overflow-hidden flex-1">
               <div className="ticker-scroll whitespace-nowrap inline-block animate-[marquee_30s_linear_infinite]">

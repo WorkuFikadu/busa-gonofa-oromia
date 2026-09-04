@@ -6,6 +6,7 @@ import {
   Droplets, Flame, AlertTriangle, Bug,
   Milk, Users, ChevronRight, Filter, X, Clock, Truck, Package
 } from 'lucide-react';
+import AudioAlertPlayer from '../common/AudioAlertPlayer';
 
 const SEVERITY_CONFIG: Record<AlertSeverity, {
   label: string; labelOm: string; labelAm: string;
@@ -125,6 +126,11 @@ const ZoneModal: React.FC<{ zone: ZoneData; onClose: () => void }> = ({ zone, on
         </div>
 
         <div className="p-5 space-y-5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Zonal Situation Brief</span>
+            <AudioAlertPlayer text={`${getLocalized(zone.name)}. ${getLocalized(zone.summary)}`} lang={language} label={language === 'om' ? 'Sagaleen Dhaggeeffadhaa' : 'Listen Voice Brief'} />
+          </div>
+
           <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-4">
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{getLocalized(zone.summary)}</p>
           </div>

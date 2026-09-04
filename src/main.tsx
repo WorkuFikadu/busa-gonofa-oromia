@@ -52,3 +52,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </React.StrictMode>
 );
+
+// Register Service Worker for Offline-First PWA capabilities
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      console.log('Busa Gonofa SW registered:', registration.scope);
+    }).catch((err) => {
+      console.log('SW registration failed:', err);
+    });
+  });
+}

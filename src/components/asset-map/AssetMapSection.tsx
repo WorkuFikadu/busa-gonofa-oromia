@@ -5,8 +5,9 @@ import { InfrastructureProject, AssetCategory } from '../../types';
 import {
   Droplets, Warehouse, HeartPulse, Home, Wheat,
   X, Building2, Users, Calendar, CheckCircle2,
-  HardHat, Filter
+  HardHat, Filter, Globe, Map
 } from 'lucide-react';
+import InteractiveGISMap from './InteractiveGISMap';
 
 const CATEGORY_CONFIG: Record<AssetCategory, { icon: React.ElementType; label: string; color: string; bgColor: string }> = {
   water_pipeline: { icon: Droplets, label: 'Water Infrastructure', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30' },
@@ -253,6 +254,7 @@ const AssetMapSection: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filterCat, setFilterCat] = useState<AssetCategory | 'all'>('all');
   const [detailProject, setDetailProject] = useState<InfrastructureProject | null>(null);
+  const [mapView, setMapView] = useState<'gis' | 'schematic'>('gis');
 
   const handleSelectPin = (id: string) => {
     setSelectedId(id);
@@ -266,48 +268,89 @@ const AssetMapSection: React.FC = () => {
         <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{t.assetMap?.subtitle}</p>
       </div>
 
-      {/* Category filter buttons */}
-      <div className="flex flex-wrap gap-2 justify-center mb-6">
-        <button
-          onClick={() => setFilterCat('all')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-            filterCat === 'all'
-              ? 'bg-gadaa-green text-white border-gadaa-green shadow'
-              : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-gadaa-green/50'
-          }`}
-        >
-          <Filter className="w-3.5 h-3.5" />
-          {t.assetMap?.filterAll}
-        </button>
-        {Object.entries(CATEGORY_CONFIG).map(([cat, cfg]) => {
-          const Icon = cfg.icon;
-          return (
-            <button
-              key={cat}
-              onClick={() => setFilterCat(cat as AssetCategory)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                filterCat === cat
-                  ? `${cfg.bgColor} ${cfg.color} border-current shadow`
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-gadaa-green/50'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {cfg.label}
-            </button>
-          );
-        })}
+      {/* Map View Toggle & Category filter buttons */}
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-6">
+        {/* Category filters */}
+        <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+          <button
+            onClick={() => setFilterCat('all')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+              filterCat === 'all'
+                ? 'bg-gadaa-green text-white border-gadaa-green shadow'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-gadaa-green/50'
+            }`}
+          >
+            <Filter className="w-3.5 h-3.5" />
+            {t.assetMap?.filterAll}
+          </button>
+          {Object.entries(CATEGORY_CONFIG).map(([cat, cfg]) => {
+            const Icon = cfg.icon;
+            return (
+              <button
+                key={cat}
+                onClick={() => setFilterCat(cat as AssetCategory)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+                  filterCat === cat
+                    ? `${cfg.bgColor} ${cfg.color} border-current shadow`
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-gadaa-green/50'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {cfg.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* View Mode Switcher */}
+        <div className="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-inner flex-shrink-0">
+          <button
+            onClick={() => setMapView('gis')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              mapView === 'gis'
+                ? 'bg-gadaa-green text-white shadow'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Globe className="w-4 h-4" />
+            GIS Live Map
+          </button>
+          <button
+            onClick={() => setMapView('schematic')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              mapView === 'schematic'
+                ? 'bg-gadaa-green text-white shadow'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Map className="w-4 h-4" />
+            Zone Schematic
+          </button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">
         {/* Map */}
         <div className="lg:col-span-3">
-          <OromiaProjectMap
-            projects={infrastructureProjects}
-            selected={selectedId}
-            onSelect={handleSelectPin}
-            filterCat={filterCat}
-          />
-          <p className="text-xs text-center text-slate-500 mt-2">Click any pin for full project details</p>
+          {mapView === 'gis' ? (
+            <InteractiveGISMap
+              selectedProjectId={selectedId}
+              onSelectProject={handleSelectPin}
+              filterCat={filterCat}
+            />
+          ) : (
+            <OromiaProjectMap
+              projects={infrastructureProjects}
+              selected={selectedId}
+              onSelect={handleSelectPin}
+              filterCat={filterCat}
+            />
+          )}
+          <p className="text-xs text-center text-slate-500 mt-2">
+            {mapView === 'gis'
+              ? 'Click any hub, warehouse, or convoy route to inspect real-time logistics'
+              : 'Click any pin for full project details'}
+          </p>
         </div>
 
         {/* Project list */}

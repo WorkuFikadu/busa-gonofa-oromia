@@ -6,8 +6,9 @@ import { IncidentReport, DisasterCategory } from '../../types';
 import {
   AlertTriangle, Droplets, Flame,
   Users, Bug, CheckCircle2, Clock, Search,
-  ChevronRight, Send
+  ChevronRight, Send, Smartphone
 } from 'lucide-react';
+import USSDSimulatorModal from './USSDSimulatorModal';
 
 const generateId = () => Math.random().toString(36).slice(2, 11).toUpperCase();
 const generateTicket = () => `BG-2026-${Math.floor(1000 + Math.random() * 8999)}`;
@@ -40,6 +41,7 @@ const CrisisCenterSection: React.FC = () => {
   const [trackedIncident, setTrackedIncident] = useState<IncidentReport | null>(null);
   const [trackError, setTrackError] = useState(false);
   const [submitted, setSubmitted] = useState<IncidentReport | null>(null);
+  const [showUSSD, setShowUSSD] = useState(false);
 
   const [form, setForm] = useState({
     category: 'drought' as DisasterCategory,
@@ -106,22 +108,34 @@ const CrisisCenterSection: React.FC = () => {
         <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">{t.reportSubtitle}</p>
       </div>
 
-      <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 w-fit mx-auto mb-8 gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+        <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 gap-1">
+          <button
+            onClick={() => { setTab('report'); setSubmitted(null); }}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all ${tab === 'report' ? 'bg-white dark:bg-slate-700 text-gadaa-red shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          >
+            <Send className="w-4 h-4" />
+            {language === 'om' ? 'Gabaasa Haaraa' : 'Submit Report'}
+          </button>
+          <button
+            onClick={() => setTab('track')}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all ${tab === 'track' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          >
+            <Search className="w-4 h-4" />
+            {language === 'om' ? 'Gabaasa Hordofi' : 'Track Response'}
+          </button>
+        </div>
+
         <button
-          onClick={() => { setTab('report'); setSubmitted(null); }}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all ${tab === 'report' ? 'bg-white dark:bg-slate-700 text-gadaa-red shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          onClick={() => setShowUSSD(true)}
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow transition-all hover:scale-105 active:scale-95"
         >
-          <Send className="w-4 h-4" />
-          {language === 'om' ? 'Gabaasa Haaraa' : 'Submit Report'}
-        </button>
-        <button
-          onClick={() => setTab('track')}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all ${tab === 'track' ? 'bg-white dark:bg-slate-700 text-gadaa-green shadow' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-        >
-          <Search className="w-4 h-4" />
-          {language === 'om' ? 'Gabaasa Hordofi' : 'Track Response'}
+          <Smartphone className="w-4 h-4" />
+          <span>{language === 'om' ? 'USSD *8181# (Offline 2G)' : 'USSD *8181# Simulator'}</span>
         </button>
       </div>
+
+      {showUSSD && <USSDSimulatorModal onClose={() => setShowUSSD(false)} />}
 
       <div className="max-w-2xl mx-auto">
         {tab === 'report' && (

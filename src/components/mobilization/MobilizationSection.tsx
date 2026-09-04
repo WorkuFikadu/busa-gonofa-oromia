@@ -7,8 +7,9 @@ import {
   DollarSign, Package, BarChart3,
   CheckCircle2, QrCode, Printer,
   Truck, Leaf, Pill, Building2, Droplets, ArrowRight,
-  ChevronRight, Info
+  ChevronRight, Info, Award
 } from 'lucide-react';
+import DonationCertificateModal from './DonationCertificateModal';
 
 const PAYMENT_GATEWAYS = [
   { id: 'telebirr', label: 'Telebirr', logo: '📱', color: 'bg-orange-500', desc: 'Ethio Telecom M-Wallet', domestic: true },
@@ -53,6 +54,7 @@ const MonetaryPipeline: React.FC = () => {
   const [donorContact, setDonorContact] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [receipt, setReceipt] = useState<MonetaryDonation | null>(null);
+  const [selectedCert, setSelectedCert] = useState<MonetaryDonation | null>(null);
 
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -124,9 +126,12 @@ const MonetaryPipeline: React.FC = () => {
           <p className="text-xs text-slate-400 mt-1">Cryptographic Verification QR</p>
         </div>
 
-        <div className="flex gap-3">
-          <button className="flex-1 flex items-center justify-center gap-2 bg-gadaa-green text-white py-2.5 rounded-xl font-bold text-sm hover:bg-gadaa-greenDark transition-colors">
-            <Printer className="w-4 h-4" /> Download PDF
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => setSelectedCert(receipt)}
+            className="flex-1 flex items-center justify-center gap-2 bg-gadaa-gold hover:bg-gadaa-goldDark text-gadaa-black py-2.5 rounded-xl font-bold text-sm shadow transition-colors"
+          >
+            <Award className="w-4 h-4" /> View Official Certificate (PDF)
           </button>
           <button
             onClick={() => { setStep(1); setReceipt(null); setAmount(0); setCustomAmount(''); }}
@@ -135,6 +140,10 @@ const MonetaryPipeline: React.FC = () => {
             New Contribution
           </button>
         </div>
+
+        {selectedCert && (
+          <DonationCertificateModal donation={selectedCert} onClose={() => setSelectedCert(null)} />
+        )}
       </div>
     );
   }
