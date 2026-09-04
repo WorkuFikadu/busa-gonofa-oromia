@@ -58,6 +58,18 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then((registration) => {
       console.log('Busa Gonofa SW registered:', registration.scope);
+      // Immediately check for updates on each page load
+      registration.update();
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('New Busa Gonofa update available.');
+            }
+          });
+        }
+      });
     }).catch((err) => {
       console.log('SW registration failed:', err);
     });

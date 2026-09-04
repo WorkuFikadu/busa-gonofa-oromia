@@ -339,7 +339,7 @@ const InKindPipeline: React.FC = () => {
         <div className="border-2 border-dashed border-gadaa-green/40 rounded-xl p-5 space-y-3 mb-4">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-full overflow-hidden border border-gadaa-gold/50 bg-white flex-shrink-0">
-              <img src="/Images/logo of busa gonofa.jpg" alt="BG" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="BG" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="font-black text-gadaa-green text-sm">BUUSAA GONOFAA OROMIYAA</div>

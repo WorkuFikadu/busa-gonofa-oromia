@@ -34,7 +34,7 @@ const DonationCertificateModal: React.FC<CertificateProps> = ({ donation, onClos
           {/* Header */}
           <div className="text-center space-y-1 mb-6">
             <div className="w-16 h-16 mx-auto rounded-full bg-white border-2 border-gadaa-gold p-1 shadow-md mb-2">
-              <img src="/Images/logo of busa gonofa.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
             </div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600">
               Mootummaa Naannoo Oromiyaatti Komishinii Hoggansa Sodaa Balaa

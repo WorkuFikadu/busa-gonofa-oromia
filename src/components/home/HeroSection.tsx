@@ -118,7 +118,7 @@ const HeroSection: React.FC = () => {
           {/* Logo overlay on the image grid */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-2xl backdrop-blur-sm">
             <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gadaa-gold flex items-center justify-center bg-white">
-               <img src="/Images/logo of busa gonofa.jpg" alt="Busa Gonofa Logo" className="w-full h-full object-cover" />
+               <img src="/logo.png" alt="Busa Gonofa Logo" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ const SitRepModal: React.FC<SitRepProps> = ({ onClose }) => {
           <div className="flex items-start justify-between border-b-2 border-slate-800 pb-4">
             <div className="flex items-center gap-3">
               <div className="w-14 h-14 rounded-full bg-white border-2 border-gadaa-gold p-1 shadow-sm">
-                <img src="/Images/logo of busa gonofa.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
               </div>
               <div>
                 <h2 className="font-black text-lg text-slate-900 leading-tight">

@@ -257,7 +257,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
           {/* Logo */}
           <button onClick={() => setActiveTab('home')} className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden border-2 border-gadaa-gold/60 group-hover:border-gadaa-gold transition-colors">
-              <img src="/Images/logo of busa gonofa.jpg" alt="Busa Gonofa Logo" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="Busa Gonofa Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className={`font-extrabold text-base leading-tight tracking-tight ${scrolled ? 'text-gadaa-green dark:text-gadaa-greenLight' : 'text-white'}`}>

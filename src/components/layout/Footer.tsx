@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
         <div className="lg:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-full bg-white border-2 border-gadaa-gold/50 flex items-center justify-center overflow-hidden">
-              <img src="/Images/logo of busa gonofa.jpg" alt="BG Logo" className="w-full h-full object-cover" />
+              <img src="/logo.png" alt="BG Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="font-extrabold text-white text-lg leading-tight">{t.siteTitle}</div>
