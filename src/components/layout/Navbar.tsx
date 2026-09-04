@@ -288,6 +288,22 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
 
           {/* Mobile toggle */}
           <div className="flex items-center gap-2 lg:hidden">
+            {/* Direct Login Button on Mobile Header */}
+            <button
+              onClick={() => setActiveTab('rbac-admin')}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                activeTab === 'rbac-admin'
+                  ? 'bg-gadaa-green text-white border-gadaa-green shadow-sm'
+                  : (scrolled
+                      ? 'border-gadaa-green text-gadaa-green hover:bg-gadaa-green/10'
+                      : 'border-white/70 text-white hover:bg-white/10')
+              }`}
+              title={currentUser ? 'Admin Portal' : 'Staff Login'}
+            >
+              <Shield className="w-3.5 h-3.5 text-gadaa-gold" />
+              <span>{currentUser ? 'Admin' : (language === 'om' ? 'Seensa' : language === 'am' ? 'መግቢያ' : 'Login')}</span>
+            </button>
+
             {!isInstalled && (
               <button
                 onClick={handleInstallClick}
@@ -310,41 +326,88 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
         {mobileOpen && (
           <div className="lg:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shadow-xl">
             <div className="flex flex-col p-4 gap-1">
-              {LANG_OPTIONS.map(opt => (
-                <button
-                  key={opt.code}
-                  onClick={() => { setLanguage(opt.code); }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${
-                    language === opt.code ? 'bg-gadaa-green/10 text-gadaa-green font-semibold' : 'text-slate-600 dark:text-slate-300'
-                  }`}
-                >
-                  {opt.flag} {opt.label}
-                </button>
-              ))}
+              {/* Language Switcher */}
+              <div className="grid grid-cols-3 gap-1 mb-2">
+                {LANG_OPTIONS.map(opt => (
+                  <button
+                    key={opt.code}
+                    onClick={() => { setLanguage(opt.code); }}
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold border transition-colors ${
+                      language === opt.code
+                        ? 'bg-gadaa-green text-white border-gadaa-green shadow-sm'
+                        : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <span>{opt.flag}</span> {opt.label.split(' ')[0]}
+                  </button>
+                ))}
+              </div>
+
+              {/* Staff & Admin Login Primary Mobile Card */}
+              <button
+                onClick={() => { setActiveTab('rbac-admin'); setMobileOpen(false); }}
+                className={`w-full flex items-center justify-between p-3.5 rounded-xl text-sm font-bold transition-all my-1 ${
+                  activeTab === 'rbac-admin'
+                    ? 'bg-gadaa-green text-white shadow-md'
+                    : 'bg-gradient-to-r from-gadaa-gold/15 to-gadaa-green/15 text-slate-800 dark:text-white border-2 border-gadaa-gold/60 hover:border-gadaa-gold shadow-sm'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-gadaa-gold/20 flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-5 h-5 text-gadaa-gold" />
+                  </div>
+                  <span className="text-left">
+                    <span className="block font-black text-sm leading-tight">
+                      {currentUser 
+                        ? (language === 'om' ? 'Giddugala Bulchiinsaa (Admin)' : language === 'am' ? 'የአስተዳዳሪ ፖርታል' : 'Admin Portal')
+                        : (language === 'om' ? 'Seensa Hojjettootaa (Staff Login)' : language === 'am' ? 'የሰራተኞች መግቢያ (Staff Login)' : 'Staff & Field Agent Login')}
+                    </span>
+                    <span className="text-xs font-normal text-slate-500 dark:text-slate-400">
+                      {currentUser ? `Signed in as ${currentUser.username}` : 'RBAC Access & Command Center'}
+                    </span>
+                  </span>
+                </span>
+                <span className="text-xs bg-gadaa-gold text-gadaa-black font-black px-2.5 py-1 rounded-full flex-shrink-0">
+                  {currentUser ? currentUser.role : 'Login →'}
+                </span>
+              </button>
+
               <hr className="my-2 border-slate-100 dark:border-slate-800" />
+
               {!isInstalled && (
                 <button
                   onClick={() => { handleInstallClick(); setMobileOpen(false); }}
-                  className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-gadaa-gold/20 border border-gadaa-gold text-gadaa-goldDark dark:text-gadaa-gold font-bold text-sm"
+                  className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-gadaa-gold/20 border border-gadaa-gold text-gadaa-goldDark dark:text-gadaa-gold font-bold text-sm mb-2"
                 >
                   <Smartphone className="w-5 h-5" />
                   {language === 'om' ? "App Fe'adhu (Install Web App)" : language === 'am' ? "መተግበሪያውን ስልክዎ ላይ ይጫኑ" : "Install Web App on Phone"}
                 </button>
               )}
+
               {NAV_ITEMS.map(item => (
                 <button
                   key={item.key}
                   onClick={() => { setActiveTab(item.key); setMobileOpen(false); }}
                   className={`px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors ${
-                    activeTab === item.key ? 'bg-gadaa-green text-white' : 'text-slate-700 dark:text-slate-300 hover:bg-gadaa-green/10'
+                    activeTab === item.key ? 'bg-gadaa-green text-white font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-gadaa-green/10'
                   }`}
                 >
                   {item.label(t)}
                 </button>
               ))}
-              <a href="tel:8181" className="flex items-center gap-2 px-4 py-2.5 text-gadaa-red font-bold text-sm">
-                <Phone className="w-4 h-4" /> 8181
-              </a>
+
+              <div className="flex items-center justify-between pt-3 mt-2 border-t border-slate-100 dark:border-slate-800">
+                <a href="tel:8181" className="flex items-center gap-2 px-2 py-1 text-gadaa-red font-black text-sm">
+                  <Phone className="w-4 h-4" /> 8181 Toll-Free
+                </a>
+                <button
+                  onClick={toggleDarkMode}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  {darkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-slate-400" />}
+                  <span>{darkMode ? 'Light' : 'Dark'}</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
