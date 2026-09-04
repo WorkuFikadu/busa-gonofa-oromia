@@ -1,11 +1,11 @@
 {
-  "name": "Buusaa Gonofaa Oromiyaa — DRM Commission",
+  "name": "Buusaa Gonofaa Oromiyaa",
   "short_name": "BusaGonofa",
   "description": "Official Web Portal of Busa Gonofa Oromia — Disaster Risk Management, Early Warning, Resource Mobilization & Social Security Commission.",
-  "start_url": "/",
-  "id": "/",
+  "start_url": "/?v=3",
+  "id": "/?v=3",
   "display": "standalone",
-  "background_color": "#08482a",
+  "background_color": "#ffffff",
   "theme_color": "#0d6b3e",
   "orientation": "any",
   "categories": [
@@ -27,7 +27,7 @@
       "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -37,12 +37,6 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
     }
   ]
 }
