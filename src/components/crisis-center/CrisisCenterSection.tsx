@@ -4,9 +4,9 @@ import { useAppState } from '../../context/AppStateContext';
 import { zonesData } from '../../data/zonesData';
 import { IncidentReport, DisasterCategory } from '../../types';
 import {
-  AlertTriangle, Droplets, Flame, CloudRain,
+  AlertTriangle, Droplets, Flame,
   Users, Bug, CheckCircle2, Clock, Search,
-  ChevronRight, Send, FileText, MapPin
+  ChevronRight, Send
 } from 'lucide-react';
 
 const generateId = () => Math.random().toString(36).slice(2, 11).toUpperCase();
@@ -92,8 +92,6 @@ const CrisisCenterSection: React.FC = () => {
       setTrackError(true);
     }
   };
-
-  const zone = zonesData.find(z => z.id === form.zoneId);
 
   return (
     <section className="py-16 px-6 max-w-screen-2xl mx-auto">

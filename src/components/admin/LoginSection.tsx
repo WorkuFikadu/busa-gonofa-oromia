@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppState } from '../../context/AppStateContext';
-import { Lock, Shield, ArrowRight } from 'lucide-react';
+import { Lock, Shield } from 'lucide-react';
 import { RBACRole } from '../../types';
 
 const LoginSection: React.FC = () => {

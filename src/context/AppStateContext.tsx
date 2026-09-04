@@ -49,7 +49,6 @@ interface AppStateContextType {
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
 
 const generateId = () => Math.random().toString(36).slice(2, 11).toUpperCase();
-const generateTicket = () => `BG-2026-${Math.floor(1000 + Math.random() * 8999)}`;
 const generateHash = () => `0x${Math.random().toString(16).slice(2, 18).toUpperCase()}`;
 
 const SEED_INCIDENTS: IncidentReport[] = [
@@ -232,7 +231,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const updateManifestStatus = (id: string, status: InKindDonationManifest['status'], officerName: string = 'System') => {
     setInKindManifests(prev => prev.map(m => m.id === id ? { ...m, status } : m));
-    logAction('MANIFEST_UPDATE', 'In-Kind Pipeline', `Manifest ${id} status changed to ${status}`);
+    logAction('MANIFEST_UPDATE', 'In-Kind Pipeline', `Manifest ${id} status changed to ${status} by ${officerName}`);
   };
 
   const addVolunteer = (volunteer: import('../types').Volunteer) => {

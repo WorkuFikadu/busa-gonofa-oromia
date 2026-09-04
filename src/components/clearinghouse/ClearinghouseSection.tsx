@@ -49,7 +49,7 @@ const DocumentCard: React.FC<{ doc: ClearinghouseDocument }> = ({ doc }) => {
 };
 
 const VacancyModal: React.FC<{ vacancy: Vacancy; onClose: () => void }> = ({ vacancy, onClose }) => {
-  const { getLocalized, language } = useLanguage();
+  const { getLocalized } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', cover: '' });
 

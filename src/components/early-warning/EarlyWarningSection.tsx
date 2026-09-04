@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAppState } from '../../context/AppStateContext';
 import { zonesData } from '../../data/zonesData';
 import { ZoneData, AlertSeverity, DisasterCategory } from '../../types';
 import {
-  Droplets, Flame, CloudRain, AlertTriangle, Bug,
+  Droplets, Flame, AlertTriangle, Bug,
   Milk, Users, ChevronRight, Filter, X, Clock, Truck, Package
 } from 'lucide-react';
 
@@ -102,7 +101,6 @@ const ZoneCard: React.FC<{ zone: ZoneData; onSelect: (z: ZoneData) => void }> = 
 const ZoneModal: React.FC<{ zone: ZoneData; onClose: () => void }> = ({ zone, onClose }) => {
   const { language, getLocalized } = useLanguage();
   const cfg = SEVERITY_CONFIG[zone.riskLevel];
-  const Icon = RISK_ICONS[zone.primaryRisk];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAppState } from '../../context/AppStateContext';
 import { infrastructureProjects } from '../../data/infrastructureProjects';
 import { InfrastructureProject, AssetCategory } from '../../types';
 import {
   Droplets, Warehouse, HeartPulse, Home, Wheat,
   X, Building2, Users, Calendar, CheckCircle2,
-  HardHat, Clock, Filter
+  HardHat, Filter
 } from 'lucide-react';
 
 const CATEGORY_CONFIG: Record<AssetCategory, { icon: React.ElementType; label: string; color: string; bgColor: string }> = {
@@ -58,10 +57,6 @@ const OromiaProjectMap: React.FC<{
 }> = ({ projects, selected, onSelect, filterCat }) => {
   const filtered = filterCat === 'all' ? projects : projects.filter(p => p.category === filterCat);
   const [hoveredZone, setHoveredZone] = useState<string | null>(null);
-
-  // Map project coordinates into SVG viewBox space (0-100 → 0-340 x, 0-100 → 0-300 y)
-  const mapX = (x: number) => x * 3.4;
-  const mapY = (y: number) => y * 3;
 
   return (
     <div className="relative bg-gradient-to-br from-emerald-900 to-slate-900 rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>

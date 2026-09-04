@@ -4,8 +4,8 @@ import { useAppState } from '../../context/AppStateContext';
 import { warehouseHubs } from '../../data/warehouseHubs';
 import { MonetaryDonation, InKindDonationManifest, PropertyType } from '../../types';
 import {
-  DollarSign, Package, BarChart3, CreditCard, Smartphone,
-  Landmark, CheckCircle2, QrCode, X, Printer, AlertTriangle,
+  DollarSign, Package, BarChart3,
+  CheckCircle2, QrCode, Printer,
   Truck, Leaf, Pill, Building2, Droplets, ArrowRight,
   ChevronRight, Info
 } from 'lucide-react';

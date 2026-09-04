@@ -18,7 +18,7 @@ import { useLanguage } from './context/LanguageContext';
 
 // Separate inner component so it can use context hooks
 const AppInner: React.FC = () => {
-  const { activeTab, setActiveTab, currentUser } = useAppState();
+  const { activeTab, currentUser } = useAppState();
   const { language } = useLanguage();
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('bg_theme') === 'dark' ||

@@ -3,16 +3,16 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useAppState } from '../../context/AppStateContext';
 import { zonesData } from '../../data/zonesData';
 import { warehouseHubs } from '../../data/warehouseHubs';
-import { AuditLogEntry, RBACRole, IncidentReport } from '../../types';
+import { RBACRole, IncidentReport } from '../../types';
 import {
-  Shield, Lock, AlertTriangle, Eye, EyeOff,
-  Terminal, Download, RefreshCw, CheckCircle2,
+  Shield, Lock, AlertTriangle,
+  Terminal, Download,
   Warehouse, BarChart3, Users, Megaphone, Activity,
-  ChevronDown, ChevronUp, Clock, X, Sun, Moon, LogOut, ArrowLeft, Menu
+  ChevronDown, ChevronUp, X, Sun, Moon, LogOut, ArrowLeft, Menu
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
-  LineChart, Line, PieChart, Pie, Cell
+  PieChart, Pie, Cell
 } from 'recharts';
 
 const ROLE_CONFIG: Record<RBACRole, { label: string; labelOm: string; color: string; bg: string; scope: string }> = {
@@ -37,7 +37,7 @@ const RBACSection: React.FC<RBACSectionProps> = ({ darkMode, toggleDarkMode }) =
   const {
     incidents, updateIncidentStatus,
     auditLog, logAction,
-    tickerActive, tickerMessage, setTickerActive, setTickerMessage,
+    tickerActive, setTickerActive, setTickerMessage,
     monetaryDonations, inKindManifests, currentUser, logout, setActiveTab
   } = useAppState();
 
