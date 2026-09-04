@@ -1,10 +1,15 @@
-const CACHE_NAME = 'busa-gonofa-cache-v1';
+const CACHE_NAME = 'busa-gonofa-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/logo.svg',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/favicon.png',
   '/manifest.json',
-  '/Images/logo of busa gonofa.jpg'
+  '/Images/logo of busa gonofa.jpg',
+  '/Images/logo of busaa gonofa.jpg'
 ];
 
 // Install Event — pre-cache core assets
